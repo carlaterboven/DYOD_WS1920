@@ -19,7 +19,10 @@ void Chunk::add_segment(std::shared_ptr<BaseSegment> segment) {
 }
 
 void Chunk::append(const std::vector<AllTypeVariant>& values) {
-  // Implementation goes here
+  DebugAssert(values.size() == column_count(), "Incorrect number of columns.");
+  for(size_t current_segment = 0; current_segment < column_count(); current_segment++) {
+    _segments.at(current_segment)->append(values.at(current_segment));
+  }
 }
 
 std::shared_ptr<BaseSegment> Chunk::get_segment(ColumnID column_id) const {
@@ -33,8 +36,7 @@ uint16_t Chunk::column_count() const {
 
 uint32_t Chunk::size() const {
   if(_segments.empty()) return 0;
-  return static_cast<uint32_t>(_segments.at(0)->size());
-  return 0;
+  return static_cast<uint32_t>(_segments.front()->size());
 }
 
 }  // namespace opossum
