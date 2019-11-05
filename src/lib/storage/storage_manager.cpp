@@ -1,5 +1,6 @@
 #include "storage_manager.hpp"
 
+#include <algorithm>
 #include <memory>
 #include <string>
 #include <utility>
@@ -16,7 +17,7 @@ StorageManager& StorageManager::get() {
 
 void StorageManager::add_table(const std::string& name, std::shared_ptr<Table> table) {
   Assert(has_table(name) == false, "Table already exists");
-  _table_map[name] = table;
+  _table_map.at(name) = table;
 }
 
 void StorageManager::drop_table(const std::string& name) {

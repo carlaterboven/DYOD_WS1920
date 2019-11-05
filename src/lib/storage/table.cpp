@@ -17,6 +17,8 @@
 
 namespace opossum {
 
+Table::Table(const uint32_t chunk_size) : _chunk_size(chunk_size) { _add_chunk(); }
+
 void Table::add_column(const std::string& name, const std::string& type) {
   Assert(_chunks.front()->size() == 0, "Data is present, cannot add Column");
 
@@ -46,14 +48,12 @@ uint64_t Table::row_count() const {
 }
 
 ChunkID Table::chunk_count() const {
-  return ChunkID{0};
-//  return ChunkID{_chunks.size()};
+  return ChunkID{_chunks.size()};
 }
 
 ColumnID Table::column_id_by_name(const std::string& column_name) const {
-//  Assert(find(_column_names.begin(), _column_names.end(), column_name) != _column_names.end(), "Column Name Incorrect");
-//  return ColumnID{distance(_column_names.begin(), find(_column_names.begin(), _column_names.end(), column_name))};
-  return ColumnID{0};
+  Assert(find(_column_names.begin(), _column_names.end(), column_name) != _column_names.end(), "Column Name Incorrect");
+  return ColumnID{distance(_column_names.begin(), find(_column_names.begin(), _column_names.end(), column_name))};
 }
 
 uint32_t Table::max_chunk_size() const {
